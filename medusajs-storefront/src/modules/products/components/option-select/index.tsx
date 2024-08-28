@@ -9,6 +9,8 @@ type OptionSelectProps = {
   current: string
   updateOption: (option: Record<string, string>) => void
   title: string
+  disabled: boolean
+  "data-testid"?: string
 }
 
 const OptionSelect: React.FC<OptionSelectProps> = ({
@@ -16,32 +18,47 @@ const OptionSelect: React.FC<OptionSelectProps> = ({
   current,
   updateOption,
   title,
+  "data-testid": dataTestId,
+  disabled,
 }) => {
   const filteredOptions = option.values.map((v) => v.value).filter(onlyUnique)
 
   return (
-    <div className="flex flex-col gap-y-3">
-      <span className="text-sm">Select {title}</span>
-      <div className="flex flex-wrap justify-between gap-2">
+    <div
+      className={clx("flex", {
+        details__color: title === "Color",
+        details__size: title === "Size",
+      })}
+    >
+      <span className="details__color-title">{title}</span>
+
+      <ul
+        className={clx({
+          color__list: title === "Color",
+          size__list: title === "Size",
+        })}
+        data-testid={dataTestId}
+      >
         {filteredOptions.map((v) => {
           return (
-            <button
-              onClick={() => updateOption({ [option.id]: v })}
-              key={v}
-              className={clx(
-                "border-ui-border-base bg-ui-bg-subtle border text-small-regular h-10 rounded-rounded p-2 flex-1 ",
-                {
-                  "border-ui-border-interactive": v === current,
-                  "hover:shadow-elevation-card-rest transition-shadow ease-in-out duration-150":
+            <li key={v}>
+              <button
+                onClick={() => updateOption({ [option.id]: v })}
+                className={clx({
+                  "border-ui-border-interactive size__link size-active":
+                    v === current,
+                  "hover:shadow-elevation-card-rest transition-shadow ease-in-out duration-150 size__link":
                     v !== current,
-                }
-              )}
-            >
-              {v}
-            </button>
+                })}
+                disabled={disabled}
+                data-testid="option-button"
+              >
+                {v}
+              </button>
+            </li>
           )
         })}
-      </div>
+      </ul>
     </div>
   )
 }

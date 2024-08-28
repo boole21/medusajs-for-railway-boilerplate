@@ -11,6 +11,7 @@ import ProductInfo from "@modules/products/templates/product-info"
 import SkeletonRelatedProducts from "@modules/skeletons/templates/skeleton-related-products"
 import { notFound } from "next/navigation"
 import ProductActionsWrapper from "./product-actions-wrapper"
+import Image from "next/image"
 
 type ProductTemplateProps = {
   product: PricedProduct
@@ -26,27 +27,85 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
   if (!product || !product.id) {
     return notFound()
   }
+  console.log(product)
 
   return (
     <>
-      <div className="content-container flex flex-col small:flex-row small:items-start py-6 relative">
-        <div className="flex flex-col small:sticky small:top-48 small:py-0 small:max-w-[300px] w-full py-8 gap-y-6">
-          <ProductInfo product={product} />
-          <ProductTabs product={product} />
-        </div>
-        <div className="block w-full relative">
-          <ImageGallery images={product?.images || []} />
-        </div>
-        <div className="flex flex-col small:sticky small:top-48 small:py-0 small:max-w-[300px] w-full py-8 gap-y-12">
-          <ProductOnboardingCta />
+      <section className="breadcrumb">
+        <ul className="breadcrumb__list flex container">
+          <li>
+            <a href="/" className="breadcrumb__link">
+              Home
+            </a>
+          </li>
+          <li>
+            <span className="breadcrumb__link">{`>`}</span>
+          </li>
+          <li>
+            <span className="breadcrumb__link">
+              {product.collection?.title}
+            </span>
+          </li>
+        </ul>
+      </section>
+
+      <section className="details section--lg">
+        <div className="details__container container grid">
+          <div className="details__group">
+            <Image
+              src={product.thumbnail}
+              width="800"
+              height="800"
+              alt=""
+              className="details__img"
+            />
+
+            <div className="details__small-images grid">
+              {product?.images.map((image, index) => (
+                <Image
+                  key={index}
+                  src={image.url}
+                  width="800"
+                  height="800"
+                  alt=""
+                  className="details__small-img"
+                />
+              ))}
+            </div>
+          </div>
+
           <Suspense
-            fallback={<ProductActions product={product} region={region} />}
+            fallback={
+              <ProductActions
+                disabled={true}
+                product={product}
+                region={region}
+              />
+            }
           >
             <ProductActionsWrapper id={product.id} region={region} />
           </Suspense>
         </div>
-      </div>
-      <div className="content-container my-16 small:my-32">
+      </section>
+
+      <section className="details__tab container">
+        <div className="detail__tabs">
+          <span className="detail__tab active-tab" data-target="#info">
+            Additional Info
+          </span>
+        </div>
+
+        <div className="details__tabs-content">
+          <div className="details__tab-content active-tab" content id="info">
+            <ProductTabs product={product} />
+          </div>
+        </div>
+      </section>
+
+      <div
+        className="content-container my-16 small:my-32"
+        data-testid="related-products-container"
+      >
         <Suspense fallback={<SkeletonRelatedProducts />}>
           <RelatedProducts product={product} countryCode={countryCode} />
         </Suspense>
