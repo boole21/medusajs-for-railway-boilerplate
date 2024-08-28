@@ -29,31 +29,23 @@ export default function ProductPrice({
   }
 
   return (
-    <div className="flex details__price">
-      <span>
-        {/* {!variant && "From "} */}
-        <span
-          data-testid="product-price"
-          data-value={selectedPrice.calculated_price_number}
-          className="new__price"
-        >
-          {selectedPrice.calculated_price}
-        </span>
+    <div className="flex flex-col text-ui-fg-base">
+      <span
+        className={clx("text-xl-semi", {
+          "text-ui-fg-interactive": selectedPrice.price_type === "sale",
+        })}
+      >
+        {!variant && "From "}
+        {selectedPrice.calculated_price}
       </span>
       {selectedPrice.price_type === "sale" && (
         <>
           <p>
-            {/* <span className="text-ui-fg-subtle">Original: </span> */}
-            <span
-              className="line-through old__price"
-              data-testid="original-product-price"
-              data-value={selectedPrice.original_price_number}
-            >
-              {selectedPrice.original_price}
-            </span>
+            <span className="text-ui-fg-subtle">Original: </span>
+            <span className="line-through">{selectedPrice.original_price}</span>
           </p>
-          <span className="save__price">
-            -{selectedPrice.percentage_diff}% Off
+          <span className="text-ui-fg-interactive">
+            -{selectedPrice.percentage_diff}%
           </span>
         </>
       )}

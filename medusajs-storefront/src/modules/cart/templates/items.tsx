@@ -11,20 +11,21 @@ type ItemsTemplateProps = {
 
 const ItemsTemplate = ({ items, region }: ItemsTemplateProps) => {
   return (
-    <div className="table__container">
+    <div>
       <div className="pb-3 flex items-center">
         <Heading className="text-[2rem] leading-[2.75rem]">Cart</Heading>
       </div>
-      <Table className="table">
-        <Table.Header className="">
+      <Table>
+        <Table.Header className="border-t-0">
           <Table.Row className="text-ui-fg-subtle txt-medium-plus">
-            <Table.HeaderCell className="!pl-0 !w-28">Item</Table.HeaderCell>
-            <Table.HeaderCell>Name</Table.HeaderCell>
+            <Table.HeaderCell className="!pl-0">Item</Table.HeaderCell>
+            <Table.HeaderCell></Table.HeaderCell>
             <Table.HeaderCell>Quantity</Table.HeaderCell>
-            <Table.HeaderCell className="!w-20">Price</Table.HeaderCell>
-            <Table.HeaderCell className="!w-20">Total</Table.HeaderCell>
+            <Table.HeaderCell className="hidden small:table-cell">
+              Price
+            </Table.HeaderCell>
             <Table.HeaderCell className="!pr-0 text-right">
-              Remove
+              Total
             </Table.HeaderCell>
           </Table.Row>
         </Table.Header>

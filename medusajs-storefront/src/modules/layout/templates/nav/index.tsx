@@ -1,110 +1,66 @@
+import { headers } from "next/headers"
 import { Suspense } from "react"
 
 import { listRegions } from "@lib/data"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import CartButton from "@modules/layout/components/cart-button"
 import SideMenu from "@modules/layout/components/side-menu"
-import Link from "next/link"
-import Image from "next/image"
-import logo from "@modules/assets/img/logo.svg"
-import search from "@modules/assets/img/search.png"
 
 export default async function Nav() {
   const regions = await listRegions().then((regions) => regions)
-  const SideMenuItems = {
-    Home: "/",
-    Store: "/store",
-    Search: "/search",
-    Account: "/account",
-    Cart: "/cart",
-  }
 
   return (
-    <header className="header">
-      <div className="header__top">
-        <div className="header__container container">
-          <div className="header__contact">
-            <span>(+01) - 2345 - 6789</span>
-            <span> Our location </span>
-          </div>
-          <p className="header__alert-news">
-            Super Value Deals - Save more with coupons
-          </p>
-
-          <LocalizedClientLink
-            href={"/account"}
-            className="header__top-action"
-            data-testid={`header__top-action`}
-          >
-            Log In/ Sign Up
-          </LocalizedClientLink>
-        </div>
-      </div>
-
-      <nav className="nav container">
-        <LocalizedClientLink
-          href="/"
-          className="txt-compact-xlarge-plus hover:text-ui-fg-base uppercase"
-          data-testid="nav-store-link"
-        >
-          <Image src={logo} alt="" className="nav__logo-img" />
-        </LocalizedClientLink>
-
-        <div className="flex w-full justify-end">
-          {/* <Link href="" className="header__action-btn">
-            <i
-              className="icon-[lucide--heart] text-2xl"
-              role="img"
-              aria-hidden="true"
-            ></i>{" "}
-            <span className="count">3</span>
-          </Link> */}
-          <div className="nav__menu" id="nav-menu">
-            <div className="nav__menu-top">
-              <Link href="index.html" className="nav__logo">
-                <Image src={logo} alt="" className="nav__logo-img" />
-              </Link>
-            </div>
-            <div className="hidden lg:flex">
-              <ul className="nav__list">
-                {Object.entries(SideMenuItems).map(([name, href]) => {
-                  return (
-                    <li className="nav__item" key={name}>
-                      <LocalizedClientLink
-                        href={href}
-                        className="nav__link"
-                        data-testid={`${name.toLowerCase()}-link`}
-                      >
-                        {name}
-                      </LocalizedClientLink>
-                    </li>
-                  )
-                })}
-              </ul>
+    <div className="sticky top-0 inset-x-0 z-50 group">
+      <header className="relative h-16 mx-auto border-b duration-200 bg-white border-ui-border-base">
+        <nav className="content-container txt-xsmall-plus text-ui-fg-subtle flex items-center justify-between w-full h-full text-small-regular">
+          <div className="flex-1 basis-0 h-full flex items-center">
+            <div className="h-full">
+              <SideMenu regions={regions} />
             </div>
           </div>
-          <Suspense
-            fallback={
+
+          <div className="flex items-center h-full">
+            <LocalizedClientLink
+              href="/"
+              className="txt-compact-xlarge-plus hover:text-ui-fg-base uppercase"
+            >
+              Medusa Store
+            </LocalizedClientLink>
+          </div>
+
+          <div className="flex items-center gap-x-6 h-full flex-1 basis-0 justify-end">
+            <div className="hidden small:flex items-center gap-x-6 h-full">
+              {process.env.FEATURE_SEARCH_ENABLED && (
+                <LocalizedClientLink
+                  className="hover:text-ui-fg-base"
+                  href="/search"
+                  scroll={false}
+                >
+                  Search
+                </LocalizedClientLink>
+              )}
               <LocalizedClientLink
-                className="hover:text-ui-fg-base flex gap-2 header__action-btn"
-                href="/cart"
-                data-testid="nav-cart-link"
+                className="hover:text-ui-fg-base"
+                href="/account"
               >
-                <i
-                  className="icon-[bi--bag] text-2xl"
-                  role="img"
-                  aria-hidden="true"
-                ></i>
-                <span className="count">0</span>
-                {/* Cart (0) */}
+                Account
               </LocalizedClientLink>
-            }
-          >
-            <CartButton />
-          </Suspense>
-          <SideMenu menu={SideMenuItems} regions={regions} />
-        </div>
-      </nav>
-    </header>
+            </div>
+            <Suspense
+              fallback={
+                <LocalizedClientLink
+                  className="hover:text-ui-fg-base flex gap-2"
+                  href="/cart"
+                >
+                  Cart (0)
+                </LocalizedClientLink>
+              }
+            >
+              <CartButton />
+            </Suspense>
+          </div>
+        </nav>
+      </header>
+    </div>
   )
 }
