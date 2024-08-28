@@ -1,5 +1,3 @@
-"use server"
-
 import {
   ProductCategory,
   ProductCollection,
@@ -46,6 +44,8 @@ const getMedusaHeaders = (tags: string[] = []) => {
 
   if (token) {
     headers.authorization = `Bearer ${token}`
+  } else {
+    headers.authorization = ""
   }
 
   return headers
@@ -199,22 +199,11 @@ export const retrieveOrder = cache(async function (id: string) {
 })
 
 // Shipping actions
-export const listShippingMethods = cache(async function listShippingMethods(
-  regionId: string,
-  productIds?: string[]
-) {
+export const listCartShippingMethods = cache(async function (cartId: string) {
   const headers = getMedusaHeaders(["shipping"])
 
-  const product_ids = productIds?.join(",")
-
   return medusaClient.shippingOptions
-    .list(
-      {
-        region_id: regionId,
-        product_ids,
-      },
-      headers
-    )
+    .listCartOptions(cartId, headers)
     .then(({ shipping_options }) => shipping_options)
     .catch((err) => {
       console.log(err)
@@ -246,7 +235,13 @@ export async function getToken(credentials: StorePostAuthReq) {
       },
     })
     .then(({ access_token }) => {
-      access_token && cookies().set("_medusa_jwt", access_token)
+      access_token &&
+        cookies().set("_medusa_jwt", access_token, {
+          maxAge: 60 * 60 * 24 * 7,
+          httpOnly: true,
+          sameSite: "strict",
+          secure: process.env.NODE_ENV === "production",
+        })
       return access_token
     })
     .catch((err) => {

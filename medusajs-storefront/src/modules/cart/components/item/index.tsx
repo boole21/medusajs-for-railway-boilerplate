@@ -46,32 +46,38 @@ const Item = ({ item, region, type = "full" }: ItemProps) => {
   }
 
   return (
-    <Table.Row className="w-full">
-      <Table.Cell className="!pl-0 p-4 w-24">
+    <Table.Row className="w-full" data-testid="product-row">
+      <Table.Cell className="!pl-0 h-22 p-4 w-16 flex items-center justify-center">
         <LocalizedClientLink
           href={`/products/${handle}`}
           className={clx("flex", {
             "w-16": type === "preview",
-            "small:w-24 w-12": type === "full",
+            "small:w-24 w-16": type === "full",
           })}
         >
-          <Thumbnail thumbnail={item.thumbnail} size="square" />
+          <Thumbnail
+            className="table__img"
+            thumbnail={item.thumbnail}
+            size="square"
+          />
         </LocalizedClientLink>
       </Table.Cell>
 
       <Table.Cell className="text-left">
-        <Text className="txt-medium-plus text-ui-fg-base">{item.title}</Text>
-        <LineItemOptions variant={item.variant} />
+        <Text className="table__title" data-testid="product-title">
+          {item.title}
+        </Text>
+        <LineItemOptions variant={item.variant} data-testid="product-variant" />
       </Table.Cell>
 
       {type === "full" && (
         <Table.Cell>
-          <div className="flex gap-2 items-center w-28">
-            <DeleteButton id={item.id} />
+          <div className="flex gap-2 justify-center items-center ">
             <CartItemSelect
               value={item.quantity}
               onChange={(value) => changeQuantity(parseInt(value.target.value))}
               className="w-14 h-10 p-4"
+              data-testid="product-select-button"
             >
               {Array.from(
                 {
@@ -91,29 +97,36 @@ const Item = ({ item, region, type = "full" }: ItemProps) => {
             </CartItemSelect>
             {updating && <Spinner />}
           </div>
-          <ErrorMessage error={error} />
+          <ErrorMessage error={error} data-testid="product-error-message" />
         </Table.Cell>
       )}
 
-      {type === "full" && (
-        <Table.Cell className="hidden small:table-cell">
+      {/* {type === "full" && ( */}
+      {type !== "preview" && (
+        <Table.Cell className="">
           <LineItemUnitPrice item={item} region={region} style="tight" />
         </Table.Cell>
       )}
+      {/* )} */}
 
-      <Table.Cell className="!pr-0">
-        <span
+      <Table.Cell className="">
+        {/* <span
           className={clx("!pr-0", {
-            "flex flex-col items-end h-full justify-center": type === "preview",
-          })}
-        >
+            "flex  items-center h-full justify-center": type === "preview",
+          })} */}
+        <span className="flex  items-center h-full justify-between">
           {type === "preview" && (
             <span className="flex gap-x-1 ">
               <Text className="text-ui-fg-muted">{item.quantity}x </Text>
-              <LineItemUnitPrice item={item} region={region} style="tight" />
+              {/* <LineItemUnitPrice item={item} region={region} style="tight" /> */}
             </span>
           )}
           <LineItemPrice item={item} region={region} style="tight" />
+        </span>
+      </Table.Cell>
+      <Table.Cell className="!pr-0">
+        <span className="flex  items-center h-full justify-center">
+          <DeleteButton id={item.id} data-testid="product-delete-button" />
         </span>
       </Table.Cell>
     </Table.Row>
