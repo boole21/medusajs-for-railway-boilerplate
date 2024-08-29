@@ -7,10 +7,10 @@ import { ProductCollectionWithPreviews } from "types/global"
 
 const Hero = ({
   region,
-  product_categories,
-}: {
+}: // product_categories,
+{
   region: Region
-  product_categories: ProductCollectionWithPreviews[]
+  // product_categories: ProductCollectionWithPreviews[]
 }) => {
   return (
     <>
