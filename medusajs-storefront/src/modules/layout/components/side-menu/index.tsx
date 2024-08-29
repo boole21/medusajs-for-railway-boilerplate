@@ -8,55 +8,93 @@ import { Fragment } from "react"
 
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import CountrySelect from "../country-select"
+import Link from "next/link"
+import Image from "next/image"
+import logo from "@modules/assets/img/logo.svg"
+import search from "@modules/assets/img/search.png"
 
-const SideMenuItems = {
-  Home: "/",
-  Store: "/store",
-  Search: "/search",
-  Account: "/account",
-  Cart: "/cart",
-}
-
-const SideMenu = ({ regions }: { regions: Region[] | null }) => {
+const SideMenu = ({ regions, menu }: { regions: Region[] | null }) => {
   const toggleState = useToggleState()
+  const SideMenuItems = menu
 
   return (
-    <div className="h-full">
-      <div className="flex items-center h-full">
-        <Popover className="h-full flex">
-          {({ open, close }) => (
-            <>
-              <div className="relative flex h-full">
-                <Popover.Button className="relative h-full flex items-center transition-all ease-out duration-200 focus:outline-none hover:text-ui-fg-base">
-                  Menu
-                </Popover.Button>
-              </div>
+    <>
+      {/* <Link href="" className="header__action-btn">
+          <i
+            className="icon-[lucide--heart] text-2xl"
+            role="img"
+            aria-hidden="true"
+          ></i>{" "}
+          <span className="count">3</span>
+        </Link>
+        <Link href="cart.html" className="header__action-btn">
+          <i
+            className="icon-[bi--bag] text-2xl"
+            role="img"
+            aria-hidden="true"
+          ></i>
+          <span className="count">3</span>
+        </Link> */}
 
-              <Transition
-                show={open}
-                as={Fragment}
-                enter="transition ease-out duration-150"
-                enterFrom="opacity-0"
-                enterTo="opacity-100 backdrop-blur-2xl"
-                leave="transition ease-in duration-150"
-                leaveFrom="opacity-100 backdrop-blur-2xl"
-                leaveTo="opacity-0"
+      <Popover>
+        {({ open, close }) => (
+          <>
+            <div className="relative h-full flex lg:hidden">
+              <Popover.Button
+                data-testid="nav-menu-button"
+                className="relative h-full flex items-center transition-all ease-out duration-200 focus:outline-none hover:text-ui-fg-base"
               >
-                <Popover.Panel className="flex flex-col absolute w-full pr-4 sm:pr-0 sm:w-1/3 2xl:w-1/4 sm:min-w-min h-[calc(100vh-1rem)] z-30 inset-x-0 text-sm text-ui-fg-on-color m-2 backdrop-blur-2xl">
-                  <div className="flex flex-col h-full bg-[rgba(3,7,18,0.5)] rounded-rounded justify-between p-6">
-                    <div className="flex justify-end" id="xmark">
-                      <button onClick={close}>
+                <span
+                  className="icon-[solar--hamburger-menu-line-duotone] text-3xl"
+                  role="img"
+                  aria-hidden="true"
+                ></span>
+              </Popover.Button>
+            </div>
+
+            <Transition
+              show={open}
+              as={Fragment}
+              enter="transition ease-out duration-150"
+              enterFrom="opacity-0"
+              enterTo="opacity-100 backdrop-blur-2xl"
+              leave="transition ease-in duration-150"
+              leaveFrom="opacity-100 backdrop-blur-2xl"
+              leaveTo="opacity-0"
+            >
+              <Popover.Panel className="fixed nav__panel w-full pr-4 sm:pr-0 sm:w-1/3 2xl:w-1/4 sm:min-w-min max-w-400 h-100  right-0 inset-y-0 text-sm  bg-gray-50 shadow-md ">
+                <div className="flex flex-col gap-y-6 py-8 px-5 ">
+                  <div className="flex justify-between w-100 mb-6">
+                    <Link href="index.html" className="nav__logo">
+                      <Image src={logo} alt="" className="nav__logo-img" />
+                    </Link>
+                    <div id="xmark">
+                      <button data-testid="close-menu-button" onClick={close}>
                         <XMark />
                       </button>
                     </div>
-                    <ul className="flex flex-col gap-6 items-start justify-start">
+                  </div>
+
+                  <div className="header__search">
+                    <input
+                      type="text"
+                      placeholder="Search for items..."
+                      className="form__input"
+                    />
+                    <button className="search__btn">
+                      <Image src={search} alt="" />
+                    </button>
+                  </div>
+                  <div data-testid="nav-menu-popup">
+                    <ul className="flex flex-col order-1 items-start gap-y-6">
                       {Object.entries(SideMenuItems).map(([name, href]) => {
                         return (
-                          <li key={name}>
+                          <li className="nav__item" key={name}>
                             <LocalizedClientLink
                               href={href}
-                              className="text-3xl leading-10 hover:text-ui-fg-disabled"
+                              className="nav__link"
                               onClick={close}
+                              data-testid={`${name.toLowerCase()}-link`}
                             >
                               {name}
                             </LocalizedClientLink>
@@ -64,38 +102,14 @@ const SideMenu = ({ regions }: { regions: Region[] | null }) => {
                         )
                       })}
                     </ul>
-                    <div className="flex flex-col gap-y-6">
-                      <div
-                        className="flex justify-between"
-                        onMouseEnter={toggleState.open}
-                        onMouseLeave={toggleState.close}
-                      >
-                        {regions && (
-                          <CountrySelect
-                            toggleState={toggleState}
-                            regions={regions}
-                          />
-                        )}
-                        <ArrowRightMini
-                          className={clx(
-                            "transition-transform duration-150",
-                            toggleState.state ? "-rotate-90" : ""
-                          )}
-                        />
-                      </div>
-                      <Text className="flex justify-between txt-compact-small">
-                        © {new Date().getFullYear()} Medusa Store. All rights
-                        reserved.
-                      </Text>
-                    </div>
                   </div>
-                </Popover.Panel>
-              </Transition>
-            </>
-          )}
-        </Popover>
-      </div>
-    </div>
+                </div>
+              </Popover.Panel>
+            </Transition>
+          </>
+        )}
+      </Popover>
+    </>
   )
 }
 
