@@ -38,7 +38,7 @@
     "cypress/plugins/index.js",
     ".next/types/**/*.ts",
     "script/awaitBackendReady.js"
-, "src/app/[countryCode]/(main)/page.tsx=="  ],
+, "src/app/[countryCode]/(main)/page.tsx==", "src/modules/layout/components/cart-dropdown/index.tsx==", "src/modules/layout/components/side-menu/index.tsx===", "src/modules/layout/templates/nav/index.tsx==="  ],
   "exclude": [
     "node_modules",
     ".next",

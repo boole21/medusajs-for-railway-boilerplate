@@ -2,7 +2,7 @@ import { LineItem } from "@medusajs/medusa"
 
 import { enrichLineItems, retrieveCart } from "@modules/cart/actions"
 
-import CartDropdown from "../cart-dropdown"
+import CartDropdown from "../cart-dropdown/index.tsx"
 
 const fetchCart = async () => {
   const cart = await retrieveCart()
