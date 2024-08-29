@@ -136,7 +136,8 @@ export default function TabItems({
               </div>
 
               <div className="product__badge light-pink">
-                {product.tags?.length == 0 ? "sale" : product.tags[0].value}
+                {/* {product.tags?.length == 0 ? "sale" : product.tags[0].value} */}
+                sale
               </div>
             </div>
             <div className="product__content">
