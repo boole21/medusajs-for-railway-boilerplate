@@ -3,7 +3,7 @@ import { MoneyAmount } from "@medusajs/medusa"
 import { Region, Variant } from "types/medusa"
 
 import { isEmpty } from "./isEmpty"
-import { ProductVariantInfo, RegionInfo } from "../../types/global"
+import { ProductVariantInfo, RegionInfo } from "../../types/global.ts"
 import { noDivisionCurrencies } from "@lib/constants"
 
 export const findCheapestRegionPrice = (
