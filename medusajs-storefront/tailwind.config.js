@@ -1,3 +1,5 @@
+// tailwind.config.js
+const { addDynamicIconSelectors } = require("@iconify/tailwind")
 const path = require("path")
 
 module.exports = {
@@ -157,5 +159,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-radix")()],
+  plugins: [require("tailwindcss-radix")(), addDynamicIconSelectors()],
 }
