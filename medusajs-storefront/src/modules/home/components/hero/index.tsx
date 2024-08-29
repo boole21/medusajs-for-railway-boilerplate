@@ -14,7 +14,7 @@ const Hero = ({
   return (
     <>
       {/* <Banner /> */}
-      <HomeFeatured region={region} product_categories={product_categories} />
+      {/* <HomeFeatured region={region} product_categories={product_categories} /> */}
     </>
   )
 }
