@@ -36,6 +36,7 @@
     "@stripe/stripe-js": "^1.29.0",
     "algoliasearch": "^4.20.0",
     "lodash": "^4.17.21",
+    "medusa-payment-stripe": "^6.0.11",
     "medusa-react": "^9.0.0",
     "next": "^14.0.0",
     "react": "^18.2.0",
