@@ -38,7 +38,7 @@
     "cypress/plugins/index.js",
     ".next/types/**/*.ts",
     "script/awaitBackendReady.js"
-  ],
+, "src/app/[countryCode]/(main)/page.tsx=="  ],
   "exclude": [
     "node_modules",
     ".next",
