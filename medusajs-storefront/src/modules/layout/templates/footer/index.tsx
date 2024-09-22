@@ -39,6 +39,9 @@ export default async function Footer() {
           <Text className="footer__description">
             <span>Hours:</span> 10:00 - 18:00, Mon - Sat
           </Text>
+          <Text className="footer__description">
+            <span>Email:</span> pennycostz@gmail.com
+          </Text>
 
           <div className="footer__social">
             <h4 className="footer__subtitle">Follow Me</h4>
